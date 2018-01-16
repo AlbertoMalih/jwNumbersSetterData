@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">jwNumbersSetterData</string>
+    <string name="email">електронная почта</string>
+    <string name="password">пароль</string>
+    <string name="emailAdress">email</string>
+    <string name="create_store">создать хранилище</string>
+    <string name="open_store">добавить данные в хранилище</string>
+    <string name="sore_not_open">хранилище не подключено</string>
+    <string name="open_store_or_create">открыть/создать хранилище</string>
+    <string name="suches_connect">хранилище успешно подключено</string>
+    <string name="no_suches_connect">не подключено хранилище</string>
+    <string name="not_suches_open_store">не удалось найти хранилище</string>
+    <string name="suches_open_store">хранилище успешно заполнено</string>
+    <string name="suches_create_store">хранилище создано</string>
+    <string name="not_suches_create_store">не удалось создать хранилище</string>
+    <string name="instruction_menu_text">инструкция</string>
+    <string name="instruction">Вам нужно поместить номера и их расположение в фаил, разделив номер и место символом -
+        \"#\", а разные номера, \"*\". Должно выйти так: \"123456#Какой-то город//улица//дом 12*\". Файл назвать так:
+    \"data_for_jwHomeNumbers.txt\", в кодировке: \"UTF-8\"</string>
+</resources>

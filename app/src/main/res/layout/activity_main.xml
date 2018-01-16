@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/usersEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:hint="@string/emailAdress"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/usersPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/usersEmail" />
+
+    <Button
+        android:id="@+id/createStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/create_store"
+        app:layout_constraintEnd_toEndOf="@id/usersPassword"
+        app:layout_constraintStart_toStartOf="@id/usersPassword"
+        app:layout_constraintTop_toBottomOf="@id/usersPassword" />
+
+
+    <Button
+        android:id="@+id/openStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/open_store"
+        app:layout_constraintEnd_toEndOf="@id/usersPassword"
+        app:layout_constraintStart_toStartOf="@id/usersPassword"
+        app:layout_constraintTop_toBottomOf="@id/createStore" />
+
+    <TextView
+        android:id="@+id/indicatorOfResultConnects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sore_not_open"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/usersPassword"
+        app:layout_constraintStart_toStartOf="@id/usersPassword"
+        app:layout_constraintTop_toBottomOf="@id/openStore" />
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/indicatorOfLoadingStore"-->
+        <!--style="?android:attr/progressBarStyle"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/usersPassword"-->
+        <!--app:layout_constraintStart_toStartOf="@id/usersPassword"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/openStore" />-->
+
+</android.support.constraint.ConstraintLayout>

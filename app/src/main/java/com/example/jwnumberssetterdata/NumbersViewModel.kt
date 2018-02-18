@@ -6,7 +6,6 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
-import java.nio.charset.Charset
 
 
 class NumbersViewModel(val context: Context) {
@@ -16,16 +15,15 @@ class NumbersViewModel(val context: Context) {
 
     fun getAllNumbersFromFile(): Map<String, Map<String, String>> {
         val result = hashMapOf<String, Map<String, String>>()
-        val file = File(Environment.getExternalStorageDirectory(), "/Download/data_for_jwHomeNumbers.txt")
+        val file = File(Environment.getExternalStorageDirectory(), "/data_for_jwHomeNumbers.txt")
         if (!file.exists()) return result
 
-        val lines = StringBuilder("")
-        for (currentString in file.readLines(Charsets.UTF_8)) lines.append(currentString)
-        lines.toString().split("*")
-                .map { it.split("#") }
-                .filter { it.size == 2 }
-                .forEach { result.put(it[0], mapOf(Pair("place", it[1]))) }
-
+        for (currentLine in file.readLines(Charsets.UTF_8)) {
+            currentLine.split("\t").let {
+                if (it.size == 3) result[it[0]] = mapOf(Pair("name", it[1]), Pair("place", it[2]))
+            }
+        }
+        Log.d("CountReadValidUsers", "count: " + result.size)
         return result
     }
 
@@ -36,9 +34,9 @@ class NumbersViewModel(val context: Context) {
                         .addOnCompleteListener({ task ->
                             if (task.isSuccessful && task.result.exists()) {
                                 currentId = fireAuth.currentUser!!.uid
-                                activity.showSuchConnect(R.string.suches_open_store)
-                                firestore.collection("cities_Homes_Numbers").document(currentId)
-                                        .update(getAllNumbersFromFile())
+                                firestore.collection("cities_Homes_Numbers").document(currentId).update(getAllNumbersFromFile())
+                                        .addOnSuccessListener { activity.showSuchConnect(R.string.suches_open_store) }
+                                        .addOnFailureListener({ activity.showNotSuchConnect(R.string.not_suches_open_store) })
                             }
                         })
             } else {

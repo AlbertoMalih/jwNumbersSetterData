@@ -3,7 +3,8 @@ package com.example.jw_numbers.dagger
 import android.app.Application
 import android.content.Context
 import com.example.jwnumberssetterdata.App
-import com.example.jwnumberssetterdata.NumbersViewModel
+import com.example.jwnumberssetterdata.NumbersViewModelCallback
+import com.example.jwnumberssetterdata.NumbersRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -21,7 +22,11 @@ class AppModule(val application: App) {
 
     @Provides
     @Singleton
-    fun provideNumbersViewModel(context: Context): NumbersViewModel = NumbersViewModel(context)
+    fun provideNumbersViewModel(context: Context): NumbersViewModelCallback = NumbersViewModelCallback(context)
+
+    @Provides
+    @Singleton
+    fun provideNumbersRepository(): NumbersRepository = NumbersRepository()
 
 
 }

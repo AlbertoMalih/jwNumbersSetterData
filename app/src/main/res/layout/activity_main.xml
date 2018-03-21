@@ -68,6 +68,6 @@
         <!--android:visibility="gone"-->
         <!--app:layout_constraintEnd_toEndOf="@id/usersPassword"-->
         <!--app:layout_constraintStart_toStartOf="@id/usersPassword"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/openStore" />-->
+        <!--app:layout_constraintTop_toBottomOf="installNumbersToStoretore" />-->
 
 </android.support.constraint.ConstraintLayout>

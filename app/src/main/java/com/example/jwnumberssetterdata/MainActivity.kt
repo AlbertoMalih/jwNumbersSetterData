@@ -12,13 +12,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToStoreCallback {
     @Inject
-    lateinit var viewModel: NumbersViewModel
+    lateinit var viewModel: NumbersViewModelCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.activity = this
         App.INSTANCE.appComponent().inject(this)
         usersEmail.setText(getPreferences(Context.MODE_PRIVATE).getString("login", ""))
         usersPassword.setText(getPreferences(Context.MODE_PRIVATE).getString("password", ""))
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val password = usersPassword.text.toString()
             if (password.isEmpty() || login.isEmpty()) return@setOnClickListener
             getPreferences(Context.MODE_PRIVATE).edit().putString("login", login).putString("password", password).apply()
-            viewModel.createStore(this, login, password)
+            viewModel.createStore(login, password)
         })
 
         openStore.setOnClickListener({
@@ -36,8 +37,29 @@ class MainActivity : AppCompatActivity() {
             val password = usersPassword.text.toString()
             if (password.isEmpty() || login.isEmpty()) return@setOnClickListener
             getPreferences(Context.MODE_PRIVATE).edit().putString("login", login).putString("password", password).apply()
-            viewModel.openStore(this, login, password)
+            viewModel.installNumbersToStore(login, password)
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.activity = null
+    }
+
+    override fun onSuchCreateStore() {
+        showSuchConnect(R.string.suches_create_store)
+    }
+
+    override fun onFailCreateStore() {
+        showNotSuchConnect(R.string.not_suches_create_store)
+    }
+
+    override fun onSuchInstallNumbersToStore() {
+        showSuchConnect(R.string.suches_open_store)
+    }
+
+    override fun onFailInstallNumbersToStore() {
+        showNotSuchConnect(R.string.not_suches_open_store)
     }
 
     fun showNotSuchConnect(phrase: Int) {

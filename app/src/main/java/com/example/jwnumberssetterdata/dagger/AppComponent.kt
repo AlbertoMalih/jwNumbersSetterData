@@ -1,4 +1,4 @@
-package com.example.jw_numbers.dagger
+package com.example.jwnumberssetterdata.dagger
 
 import com.example.jwnumberssetterdata.MainActivity
 import dagger.Component

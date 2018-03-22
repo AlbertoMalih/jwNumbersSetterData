@@ -3,18 +3,29 @@ package com.example.jwnumberssetterdata
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import java.io.File
-import javax.inject.Inject
 
 
-class NumbersViewModelCallback(val context: Context) : CreateStoreCallback, InstallNumbersToStoreCallback {
+class NumbersViewModel(val context: Context, val numbersRepository: NumbersRepository) : CreateStoreCallback, InstallNumbersToStoreCallback {
     var activity: MainActivity? = null
-    @Inject
-    private lateinit var numbersRepository: NumbersRepository
 
 
     fun installNumbersToStore(login: String, password: String) {
-        numbersRepository.installNumbersToStore(this, login, password, getAllNumbersFromFile())
+        Single.create<Map<String, Map<String, String>>> { emitter ->
+            emitter.onSuccess(getAllNumbersFromFile())
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onError = { onFailInstallNumbersToStore() },
+                        onSuccess = { result ->
+                            numbersRepository.installNumbersToStore(this, login, password, result)
+                        }
+                )
     }
 
     fun createStore(login: String, password: String) {
@@ -44,7 +55,8 @@ class NumbersViewModelCallback(val context: Context) : CreateStoreCallback, Inst
 
         for (currentLine in file.readLines(Charsets.UTF_8)) {
             currentLine.split("\t").let {
-                if (it.size == 3) result[it[0]] = mapOf(Pair("name", it[1]), Pair("place", it[2]))
+                if (it.size == 3)
+                    result[it[0]] = mapOf(Pair("name", it[1]), Pair("place", it[2]))
             }
         }
         Log.d("CountReadValidUsers", "count: " + result.size)

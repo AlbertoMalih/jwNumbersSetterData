@@ -14,13 +14,14 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToStoreCallback {
     @Inject
-    lateinit var viewModel: NumbersViewModelCallback
+    lateinit var viewModel: NumbersViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.activity = this
         App.INSTANCE.appComponent().inject(this)
+        viewModel.activity = this
         usersEmail.setText(getPreferences(Context.MODE_PRIVATE).getString("login", ""))
         usersPassword.setText(getPreferences(Context.MODE_PRIVATE).getString("password", ""))
 

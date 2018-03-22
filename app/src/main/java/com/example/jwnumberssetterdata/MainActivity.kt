@@ -63,12 +63,12 @@ class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToS
         showNotSuchConnect(R.string.not_suches_open_store)
     }
 
-    fun showNotSuchConnect(phrase: Int) {
+    private fun showNotSuchConnect(phrase: Int) {
         indicatorOfResultConnects.text = this@MainActivity.resources.getString(phrase)
         indicatorOfResultConnects.setTextColor(ContextCompat.getColor(this@MainActivity, android.R.color.holo_red_light))
     }
 
-    fun showSuchConnect(phrase: Int) {
+    private fun showSuchConnect(phrase: Int) {
         indicatorOfResultConnects.text = this@MainActivity.resources.getString(phrase)
         indicatorOfResultConnects.setTextColor(ContextCompat.getColor(this@MainActivity, android.R.color.holo_green_light))
     }

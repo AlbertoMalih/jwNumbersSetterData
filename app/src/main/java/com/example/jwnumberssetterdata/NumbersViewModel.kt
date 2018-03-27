@@ -15,7 +15,7 @@ class NumbersViewModel(val context: Context, val numbersRepository: NumbersRepos
 
 
     fun installNumbersToStore(login: String, password: String) {
-        Single.create<Map<String, Map<String, String>>> { emitter ->
+        Single.create<List<Map<String, String>>> { emitter ->
             emitter.onSuccess(getAllNumbersFromFile())
         }
                 .subscribeOn(Schedulers.io())
@@ -48,15 +48,15 @@ class NumbersViewModel(val context: Context, val numbersRepository: NumbersRepos
         activity?.onFailInstallNumbersToStore()
     }
 
-    private fun getAllNumbersFromFile(): Map<String, Map<String, String>> {
-        val result = hashMapOf<String, Map<String, String>>()
+    private fun getAllNumbersFromFile(): List<Map<String, String>> {
+        val result = mutableListOf<Map<String, String>>()
         val file = File(Environment.getExternalStorageDirectory(), "/data_for_jwHomeNumbers.txt")
         if (!file.exists()) return result
 
         for (currentLine in file.readLines(Charsets.UTF_8)) {
             currentLine.split("\t").let {
                 if (it.size == 3)
-                    result[it[0]] = mapOf(Pair("name", it[1]), Pair("place", it[2]))
+                    result.add(mapOf(Pair("number", it[0]), Pair("name", it[1]), Pair("place", it[2])))
             }
         }
         Log.d("CountReadValidUsers", "count: " + result.size)

@@ -27,7 +27,7 @@ class NumbersRepository {
         }.addOnFailureListener { callback.onFailCreateStore() }
     }
 
-    fun installNumbersToStore(callback: InstallNumbersToStoreCallback, login: String, password: String, numbersFromFile: Map<String, Map<String, String>>) {
+    fun installNumbersToStore(callback: InstallNumbersToStoreCallback, login: String, password: String, numbersFromFile: List<Map<String, String>>) {
         fireAuth.signInWithEmailAndPassword(login, password).addOnSuccessListener {
             firestore.collection(NAME_OF_USERS_COLLECTION).document(fireAuth.currentUser!!.uid).collection("cur_numbers").get()
                     .addOnSuccessListener {
@@ -35,7 +35,7 @@ class NumbersRepository {
                             var isInsertedAllNumbers = true
                             for (numberPair in numbersFromFile) {
                                 firestore.collection(NAME_OF_USERS_COLLECTION).document(fireAuth.currentUser!!.uid).collection("cur_numbers")
-                                        .document(numberPair.key).set(numberPair.value).addOnFailureListener { isInsertedAllNumbers = false }
+                                        .add(numberPair).addOnFailureListener { isInsertedAllNumbers = false }
                             }
                             if (isInsertedAllNumbers) emitter.onComplete()
                             else emitter.onComplete()

@@ -1,11 +1,11 @@
 package com.example.jwnumberssetterdata
 
-import android.app.Application
-import com.example.jw_numbers.dagger.DaggerAppComponent
+import android.support.multidex.MultiDexApplication
 import com.example.jwnumberssetterdata.dagger.AppComponent
 import com.example.jwnumberssetterdata.dagger.AppModule
+import com.example.jwnumberssetterdata.dagger.DaggerAppComponent
 
-class App : Application() {
+class App : MultiDexApplication() {
     companion object {
         lateinit var INSTANCE: App
         lateinit var component: AppComponent

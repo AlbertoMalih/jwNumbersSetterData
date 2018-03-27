@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToS
         setContentView(R.layout.activity_main)
         App.INSTANCE.appComponent().inject(this)
         viewModel.activity = this
+        idYourStore.text = getPreferences(Context.MODE_PRIVATE).getString("yourStoreId", "")
         usersEmail.setText(getPreferences(Context.MODE_PRIVATE).getString("login", ""))
         usersPassword.setText(getPreferences(Context.MODE_PRIVATE).getString("password", ""))
 
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToS
     }
 
     override fun onSuchCreateStore() {
+        getPreferences(Context.MODE_PRIVATE).edit().putString("yourStoreId", FirebaseAuth.getInstance().uid).apply()
+        idYourStore.text = FirebaseAuth.getInstance().uid.toString()
         showSuchConnect(R.string.suches_create_store)
     }
 

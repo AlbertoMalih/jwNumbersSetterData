@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,14 +32,16 @@ class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToS
             val login = usersEmail.text.toString()
             val password = usersPassword.text.toString()
             if (password.isEmpty() || login.isEmpty()) return@setOnClickListener
+            onStartLoad()
             getPreferences(Context.MODE_PRIVATE).edit().putString("login", login).putString("password", password).apply()
             viewModel.createStore(login, password)
         })
 
         openStore.setOnClickListener({
-            val login = usersEmail.text.toString()
-            val password = usersPassword.text.toString()
+            val login = usersEmail.text.toString().trim()
+            val password = usersPassword.text.toString().trim()
             if (password.isEmpty() || login.isEmpty()) return@setOnClickListener
+            onStartLoad()
             getPreferences(Context.MODE_PRIVATE).edit().putString("login", login).putString("password", password).apply()
             viewModel.installNumbersToStore(login, password)
         })
@@ -50,21 +53,36 @@ class MainActivity : AppCompatActivity(), CreateStoreCallback, InstallNumbersToS
     }
 
     override fun onSuchCreateStore() {
+        onStopLoad()
         getPreferences(Context.MODE_PRIVATE).edit().putString("yourStoreId", FirebaseAuth.getInstance().uid).apply()
         idYourStore.text = FirebaseAuth.getInstance().uid.toString()
         showSuchConnect(R.string.suches_create_store)
     }
 
     override fun onFailCreateStore() {
+        onStopLoad()
         showNotSuchConnect(R.string.not_suches_create_store)
     }
 
     override fun onSuchInstallNumbersToStore() {
+        onStopLoad()
         showSuchConnect(R.string.suches_open_store)
     }
 
     override fun onFailInstallNumbersToStore() {
+        onStopLoad()
         showNotSuchConnect(R.string.not_suches_open_store)
+    }
+
+
+    private fun onStartLoad() {
+        displayOperation.visibility = View.VISIBLE
+        indicatorOfResultConnects.visibility = View.GONE
+    }
+
+    private fun onStopLoad() {
+        displayOperation.visibility = View.GONE
+        indicatorOfResultConnects.visibility = View.VISIBLE
     }
 
     private fun showNotSuchConnect(phrase: Int) {
